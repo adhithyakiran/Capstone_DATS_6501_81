@@ -1,0 +1,44 @@
+// Define the point of interest
+var point = ee.Geometry.Point(88.88373100454696, 23.037980048032868);
+
+// Define the date range
+var start = ee.Date('2022-11-23');
+var finish = ee.Date('2023-02-03');
+
+// Filter an ImageCollection from the Sentinel 2 surface reflectance collection, using bounds, date, and selecting the images with the least cloud cover
+var img_collection = ee.ImageCollection("COPERNICUS/S2_SR")
+  .filterBounds(point)
+  .filterDate(start, finish)
+  .sort('CLOUD_COVER', true);
+
+// Define the region of interest (ROI)
+var roi = ee.Geometry.Polygon([[
+  [88.871596, 23.031003],
+  [88.899308, 23.031003],
+  [88.899308, 23.044233],
+  [88.871596, 23.044233],
+  [88.871596, 23.031003]
+]]);
+
+// Export each image in the collection
+img_collection = img_collection.toList(img_collection.size());
+var numImages = img_collection.size().getInfo();
+
+for (var i = 0; i < numImages; i++) {
+  var img = ee.Image(img_collection.get(i));
+  var date_taken = img.date().format('yyyyMMdd');
+  
+  // Export each band as a separate image
+  var bands = ['B2', 'B3', 'B4'];
+  bands.forEach(function(band) {
+    var description = 'sentinel_image_' + date_taken.getInfo() + '_' + band;
+    Export.image.toDrive({
+      image: img.select([band]),
+      description: description,
+      scale: 10,
+      region: roi,
+      folder: 'capstone',
+      crs: 'EPSG:4326'
+    });
+  });
+}

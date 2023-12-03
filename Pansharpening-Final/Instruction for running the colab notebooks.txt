@@ -1,0 +1,23 @@
+concerns :
+1.The multipectral planetscope image is giving a purple mask over the image, you can see this by running Pansharpening.ipynb file.
+2.Can you try with your planetscope images matching sentinal2 scene and try runing my code to see for better resuts ?
+3. Your comments of histograms and Pixel differences.
+4. For reference you can see the first pansharpening methode and it's results in Pansharpening.ipynb
+
+=============
+
+I have created a tif image matching b2_sentinal2.tif,b3_sentinal2.tif,b4_sentinal2.tif (This is of 9th jan 2023) out of dense planetscope image (of 8th jan 2023). I have done this using QGIS software , and produced a cropped image matching the sentinal2 scene from dense planetscope image.
+Output file is : pla.tif. 
+Planetscope image used is in the folder : 'planetscope original dense image'
+
+1. First need to run the resize.ipynb colab notebook for matching the shapes.
+   Input data are : b2_sentinal2.tif,b3_sentinal2.tif,b4_sentinal2.tif and pla.tif
+   Output data are : B2.tif,B3.tif,B4.tif
+
+2. Then run the Pansharpening.ipynb fo running the Pansharpening.
+   Input data are : B2.tif,B3.tif,B4.tif and pla.tif
+
+   There are three methods of pansharpening, one by one in the code file. First one is gviing good results in terms of qualitative metrics like ERGAS values.
+
+
+
